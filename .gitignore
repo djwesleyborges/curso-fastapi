@@ -160,3 +160,4 @@ cython_debug/
 .idea/
 alembic/versions/
 /test/test.db
+/test/contas_a_pagar_e_receber/routers/test.db
