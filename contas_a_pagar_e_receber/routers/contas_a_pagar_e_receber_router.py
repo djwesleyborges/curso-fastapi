@@ -38,6 +38,13 @@ def lista_contas(db: Session = Depends(get_db)) -> list[ContasPagarReceberRespon
     return contas
 
 
+@router.get("/{id_conta_a_pagar_e_receber}", response_model=ContasPagarReceberResponse)
+def obter_conta(id_conta_a_pagar_e_receber: int,
+                db: Session = Depends(get_db)) -> ContasPagarReceberResponse:
+    conta = db.query(ContaPagarReceber).get(id_conta_a_pagar_e_receber)
+    return conta
+
+
 @router.post("/", response_model=ContasPagarReceberResponse, status_code=201)
 def criar_conta(conta: ContasPagarReceberRequest,
                 db: Session = Depends(get_db)) -> ContasPagarReceberResponse:
@@ -48,3 +55,27 @@ def criar_conta(conta: ContasPagarReceberRequest,
     db.refresh(contas_a_pagar_e_receber)
 
     return contas_a_pagar_e_receber
+
+
+@router.put("/{id_conta_a_pagar_e_receber}", response_model=ContasPagarReceberResponse,
+            status_code=200)
+def atualizar_conta(id_conta_a_pagar_e_receber: int, conta: ContasPagarReceberRequest,
+                    db: Session = Depends(get_db)) -> ContasPagarReceberResponse:
+    contas_a_pagar_e_receber = db.query(ContaPagarReceber).get(
+        id_conta_a_pagar_e_receber)
+    contas_a_pagar_e_receber.descricao = conta.descricao
+    contas_a_pagar_e_receber.valor = conta.valor
+    contas_a_pagar_e_receber.tipo = conta.tipo
+    db.add(contas_a_pagar_e_receber)
+    db.commit()
+    db.refresh(contas_a_pagar_e_receber)
+    return contas_a_pagar_e_receber
+
+
+@router.delete("/{id_conta_a_pagar_e_receber}", status_code=204)
+def remover_conta(id_conta_a_pagar_e_receber: int,
+                  db: Session = Depends(get_db)) -> None:
+    conta = db.query(ContaPagarReceber).get(id_conta_a_pagar_e_receber)
+    db.delete(conta)
+    db.commit()
+    return None

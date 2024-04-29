@@ -68,6 +68,70 @@ def test_deve_criar_conta_a_pagar_e_receber():
     assert response.json() == nova_conta_copy
 
 
+def test_deve_obter_uma_unica_conta_a_pagar_e_receber():
+    Base.metadata.drop_all(bind=engine)
+    Base.metadata.create_all(bind=engine)
+
+    response = client.post("/contas_a_pagar_e_receber", json={
+        "descricao": "Curso de Python",
+        "valor": 333.0,
+        "tipo": "PAGAR"
+    })
+
+    id_conta_a_pagar_e_receber = response.json()["id"]
+
+    response_get = client.get(f"/contas_a_pagar_e_receber/{id_conta_a_pagar_e_receber}")
+    assert response_get.status_code == 200
+    assert response_get.json() == {
+        "id": id_conta_a_pagar_e_receber,
+        "descricao": "Curso de Python",
+        "valor": 333.0,
+        "tipo": "PAGAR"
+    }
+
+def test_deve_atualizar_conta_a_pagar_e_receber():
+    Base.metadata.drop_all(bind=engine)
+    Base.metadata.create_all(bind=engine)
+
+    response = client.post("/contas_a_pagar_e_receber", json={
+        "descricao": "Curso de Python",
+        "valor": 333.0,
+        "tipo": "PAGAR"
+    })
+
+    id_conta_a_pagar_e_receber = response.json()["id"]
+
+    response_put = client.put(f"/contas_a_pagar_e_receber/{id_conta_a_pagar_e_receber}",
+                          json={
+                              "descricao": "Curso de FastAPI",
+                              "valor": 333.0,
+                              "tipo": "PAGAR"
+                          })
+    assert response_put.status_code == 200
+    assert response_put.json() == {
+        "id": id_conta_a_pagar_e_receber,
+        "descricao": "Curso de FastAPI",
+        "valor": 333.0,
+        "tipo": "PAGAR"
+    }
+
+
+def test_deve_remover_conta_a_pagar_e_receber():
+    Base.metadata.drop_all(bind=engine)
+    Base.metadata.create_all(bind=engine)
+
+    response = client.post("/contas_a_pagar_e_receber", json={
+        "descricao": "Curso de Python",
+        "valor": 333.0,
+        "tipo": "PAGAR"
+    })
+
+    id_conta_a_pagar_e_receber = response.json()["id"]
+
+    response = client.delete(f"/contas_a_pagar_e_receber/{id_conta_a_pagar_e_receber}")
+    assert response.status_code == 204
+
+
 def test_deve_retornar_erro_quando_exceder_a_descricao():
     Base.metadata.drop_all(bind=engine)
     Base.metadata.create_all(bind=engine)
