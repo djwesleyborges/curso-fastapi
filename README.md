@@ -18,3 +18,14 @@
     <img src="https://img.shields.io/pypi/pyversions/fastapi.svg?color=%2334D058" alt="Supported Python versions">
 </a>
 </p>
+
+# Neste repositorio estão meus estudos com FastAPI
+## Como instalar
+
+```bash
+git clone git@github.com:djwesleyborges/curso-fastapi.git
+cd curso-fastapi
+poetry shell
+poetry install
+python main.py
+```
