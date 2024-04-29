@@ -2,6 +2,9 @@ from fastapi import FastAPI
 
 # from shared.database import Base, engine
 from contas_a_pagar_e_receber.routers import contas_a_pagar_e_receber_router
+from shared.exceptions import NotFound
+from shared.exceptions_handler import not_found_exception_handler
+
 # from contas_a_pagar_e_receber.models import (
 #     ContaPagarReceber,
 # )
@@ -11,6 +14,7 @@ from contas_a_pagar_e_receber.routers import contas_a_pagar_e_receber_router
 app = FastAPI()
 
 app.include_router(contas_a_pagar_e_receber_router.router)
+app.add_exception_handler(NotFound, not_found_exception_handler)
 
 if __name__ == "__main__":
     import uvicorn

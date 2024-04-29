@@ -89,6 +89,15 @@ def test_deve_obter_uma_unica_conta_a_pagar_e_receber():
         "tipo": "PAGAR"
     }
 
+
+def test_deve_retornar_nao_encontrado_para_id_nao_existente():
+    Base.metadata.drop_all(bind=engine)
+    Base.metadata.create_all(bind=engine)
+    response_get = client.get(f"/contas_a_pagar_e_receber/100")
+    assert response_get.status_code == 404
+    assert response_get.json() == {"message": "Conta a Pagar e Receber não encontrado"}
+
+
 def test_deve_atualizar_conta_a_pagar_e_receber():
     Base.metadata.drop_all(bind=engine)
     Base.metadata.create_all(bind=engine)
@@ -102,11 +111,11 @@ def test_deve_atualizar_conta_a_pagar_e_receber():
     id_conta_a_pagar_e_receber = response.json()["id"]
 
     response_put = client.put(f"/contas_a_pagar_e_receber/{id_conta_a_pagar_e_receber}",
-                          json={
-                              "descricao": "Curso de FastAPI",
-                              "valor": 333.0,
-                              "tipo": "PAGAR"
-                          })
+                              json={
+                                  "descricao": "Curso de FastAPI",
+                                  "valor": 333.0,
+                                  "tipo": "PAGAR"
+                              })
     assert response_put.status_code == 200
     assert response_put.json() == {
         "id": id_conta_a_pagar_e_receber,
@@ -114,6 +123,19 @@ def test_deve_atualizar_conta_a_pagar_e_receber():
         "valor": 333.0,
         "tipo": "PAGAR"
     }
+
+
+def test_deve_retornar_nao_encontrado_para_id_nao_existente_na_atualizacao():
+    Base.metadata.drop_all(bind=engine)
+    Base.metadata.create_all(bind=engine)
+
+    response = client.put(f"/contas_a_pagar_e_receber/100", json={
+        "descricao": "Curso de FastAPI",
+        "valor": 333.0,
+        "tipo": "PAGAR"
+    })
+    assert response.status_code == 404
+    assert response.json() == {"message": "Conta a Pagar e Receber não encontrado"}
 
 
 def test_deve_remover_conta_a_pagar_e_receber():
@@ -130,6 +152,14 @@ def test_deve_remover_conta_a_pagar_e_receber():
 
     response = client.delete(f"/contas_a_pagar_e_receber/{id_conta_a_pagar_e_receber}")
     assert response.status_code == 204
+
+
+def test_deve_retornar_erro_nao_encontrado_para_id_nao_existente_na_remocao():
+    Base.metadata.drop_all(bind=engine)
+    Base.metadata.create_all(bind=engine)
+    response = client.delete(f"/contas_a_pagar_e_receber/100")
+    assert response.status_code == 404
+    assert response.json() == {"message": "Conta a Pagar e Receber não encontrado"}
 
 
 def test_deve_retornar_erro_quando_exceder_a_descricao():
