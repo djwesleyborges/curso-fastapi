@@ -1,4 +1,5 @@
 from enum import Enum
+from typing import Optional
 
 from fastapi import APIRouter, Depends
 from pydantic import BaseModel, Field
@@ -31,6 +32,7 @@ class ContasPagarReceberRequest(BaseModel):
     descricao: str = Field(min_length=5, max_length=30)
     valor: float = Field(gt=0)
     tipo: ContaPagarReceberTipoEnum
+    fornecedor_id: int | None = None
 
 
 @router.get("/", response_model=list[ContasPagarReceberResponse])

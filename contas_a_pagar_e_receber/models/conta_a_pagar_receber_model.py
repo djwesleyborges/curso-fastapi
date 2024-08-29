@@ -1,4 +1,5 @@
-from sqlalchemy import Integer, String, Numeric, Column
+from sqlalchemy import Integer, String, Numeric, Column, ForeignKey
+from sqlalchemy.orm import relationship
 
 from shared import Base
 
@@ -10,3 +11,6 @@ class ContaPagarReceber(Base):
     descricao = Column(String(30))
     valor = Column(Numeric)
     tipo = Column(String(30))
+
+    fornecedor_id = Column(Integer, ForeignKey("fornecedor_cliente.id"))
+    fornecedor = relationship("FornecedorCliente")
