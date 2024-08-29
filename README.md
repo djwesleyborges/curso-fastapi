@@ -29,3 +29,9 @@ poetry shell
 poetry install
 python main.py
 ```
+
+Comandos:</br>
+Criando migração:</br>
+``alembic revision --autogenerate -m "Cria tabela de fornecedor cliente"``</br>
+Aplicar migração no banco:</br>
+``alembic upgrade head``
