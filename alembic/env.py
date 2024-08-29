@@ -19,6 +19,8 @@ if config.config_file_name is not None:
 # from myapp import mymodel
 # noinspection PyUnresolvedReferences
 from contas_a_pagar_e_receber.models import ContaPagarReceber
+# noinspection PyUnresolvedReferences
+from contas_a_pagar_e_receber.models import FornecedorCliente
 from shared.database import Base
 # target_metadata = mymodel.Base.metadata
 target_metadata = Base.metadata
