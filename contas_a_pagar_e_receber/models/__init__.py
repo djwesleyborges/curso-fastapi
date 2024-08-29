@@ -1,1 +1,2 @@
 from .conta_a_pagar_receber_model import ContaPagarReceber
+from .fornecedor_cliente_model import FornecedorCliente

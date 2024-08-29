@@ -18,7 +18,8 @@ class ContasPagarReceberResponse(BaseModel):
     tipo: str
 
     class Config:
-        orm_mode = True
+        # orm_mode = True
+        from_attributes = True
 
 
 class ContaPagarReceberTipoEnum(str, Enum):
